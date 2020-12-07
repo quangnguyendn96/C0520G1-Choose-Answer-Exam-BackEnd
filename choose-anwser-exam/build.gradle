@@ -21,8 +21,8 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+//    testImplementation 'org.springframework.security:spring-security-test'
+//    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 }
 
 test {

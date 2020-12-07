@@ -8,7 +8,7 @@ import sprint_2.model.User;
 import sprint_2.service.UserService;
 
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -16,7 +16,7 @@ public class UserController {
     UserService userService;
     @Autowired
 
-    @GetMapping()
+    @GetMapping("/list")
     public ResponseEntity<List<User>> getListUser() {
         List<User> userList = userService.findAll();
         return new ResponseEntity<>(userList, HttpStatus.OK);
