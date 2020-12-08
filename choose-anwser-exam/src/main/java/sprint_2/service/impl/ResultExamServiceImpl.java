@@ -16,4 +16,15 @@ public class ResultExamServiceImpl implements ResultExamService {
     public List<?> statisticsData() {
         return resultExamRepository.statisticsData();
     }
+
+    @Override
+    public List<?> statisticsCountExamSubject() {
+        return resultExamRepository.statisticsCountExamSubject();
+    }
+
+    @Override
+    public List<?> getStatisticsResultExamUserBySubject(String subject) {
+        return resultExamRepository.getStatisticsResultExamUserBySubject(subject);
+    }
+
 }
