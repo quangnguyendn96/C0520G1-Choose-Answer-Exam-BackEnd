@@ -24,6 +24,7 @@ import java.util.List;
  * -----------------------------------------------------------------------
  * 08-12-2020         NhatL           CRUD
  */
+
 @RestController
 @RequestMapping("/user")
 @CrossOrigin
@@ -120,4 +121,14 @@ public class UserController {
         userService.deleteById(idUser);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<User> findUserById(@PathVariable long id) {
+        User user = userService.findById(id);
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,7 +21,7 @@ public class Exam {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "exam_question", joinColumns = @JoinColumn(name="idExam"), inverseJoinColumns = @JoinColumn(name="idQuestion"))
     @JsonIgnoreProperties("exams")
-    private Set<Question> questions;
+    private List<Question> questions;
 
     public Long getIdExam() {
         return idExam;
@@ -54,11 +55,11 @@ public class Exam {
         this.resultExamCollection = resultExamCollection;
     }
 
-    public Set<Question> getQuestions() {
+    public List<Question> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(Set<Question> questions) {
+    public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
 }
