@@ -3,6 +3,7 @@ package sprint_2.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,14 +18,15 @@ public class Question {
     private String answerD;
     private String trueAnswer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idSubject")
     @JsonIgnoreProperties("questionCollection")
     private Subject subject;
 
-    @ManyToMany(mappedBy = "questions")
+    @ManyToMany(mappedBy = "questions", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("questions")
-    private Set<Exam> exams;
+    private List<Exam> exams;
+
 
     public Long getIdQuestion() {
         return idQuestion;
@@ -90,11 +92,11 @@ public class Question {
         this.subject = subject;
     }
 
-    public Set<Exam> getExams() {
+    public List<Exam> getExams() {
         return exams;
     }
 
-    public void setExams(Set<Exam> exams) {
+    public void setExams(List<Exam> exams) {
         this.exams = exams;
     }
 }

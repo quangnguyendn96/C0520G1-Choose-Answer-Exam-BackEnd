@@ -1,20 +1,33 @@
 package sprint_2.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import javax.validation.constraints.NotEmpty;
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 public class User {
+    public interface checkCreate {
+    }
+
+    public interface checkEdit {
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
-    private String username;
+
+    @NotEmpty(message = "Vui lòng nhập tên đăng nhập", groups = checkCreate.class)
+    private String userName;
+    @NotEmpty(message = "Vui lòng nhập mật khẩu", groups = checkCreate.class)
+
     private String password;
+    @NotEmpty(message = "Vui lòng nhập họ và tên", groups = checkEdit.class)
     private String fullName;
+    @NotEmpty(message = "Vui lòng nhập email", groups = checkEdit.class)
     private String email;
+    @NotEmpty(message = "Vui lòng nhập dịa chỉ", groups = checkEdit.class)
     private String address;
+    @NotEmpty(message = "Vui lòng nhập số điện thoại", groups = checkEdit.class)
     private String phoneNumber;
     private String image;
 
@@ -30,8 +43,8 @@ public class User {
 
     private Collection<ResultExam> resultExamCollection;
 
-    public Role getRole() {
-        return role;
+    public Role getRole(Role role) {
+        return this.role;
     }
 
     public void setRole(Role role) {
