@@ -9,4 +9,5 @@ public interface RoleService {
     List<Role> findAll();
 
     Role finById(Long idRole);
+
 }
