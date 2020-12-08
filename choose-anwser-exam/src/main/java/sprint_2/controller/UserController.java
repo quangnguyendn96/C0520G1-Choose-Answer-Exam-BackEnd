@@ -8,7 +8,6 @@ import sprint_2.model.User;
 import sprint_2.service.UserService;
 
 import java.util.List;
-@CrossOrigin
 @RestController
 @RequestMapping("/user")
 @CrossOrigin
