@@ -19,7 +19,6 @@ public class UploadFileController {
     @Autowired
     UploadFileService uploadFileService;
 
-
     @PostMapping("/upload")
     public ResponseEntity<List<Question>> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         List<Question> questions = uploadFileService.findAll(file);
