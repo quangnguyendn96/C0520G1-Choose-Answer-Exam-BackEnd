@@ -8,15 +8,15 @@ import sprint_2.model.User;
 import sprint_2.service.UserService;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
     @Autowired
     UserService userService;
     @Autowired
 
-    @GetMapping()
+    @GetMapping("/list")
     public ResponseEntity<List<User>> getListUser() {
         List<User> userList = userService.findAll();
         return new ResponseEntity<>(userList, HttpStatus.OK);
@@ -26,4 +26,14 @@ public class UserController {
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<User> findUserById(@PathVariable long id) {
+        User user = userService.findById(id);
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
 }
