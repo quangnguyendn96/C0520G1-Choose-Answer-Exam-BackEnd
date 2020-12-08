@@ -10,7 +10,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
-    private String userName;
+    private String username;
     private String password;
     private String fullName;
     private String email;
@@ -26,6 +26,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
+
+
     private Collection<ResultExam> resultExamCollection;
 
     public Role getRole() {
@@ -44,12 +46,12 @@ public class User {
         this.idUser = idUser;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -107,4 +109,5 @@ public class User {
     public void setResultExamCollection(Collection<ResultExam> resultExamCollection) {
         this.resultExamCollection = resultExamCollection;
     }
+
 }
