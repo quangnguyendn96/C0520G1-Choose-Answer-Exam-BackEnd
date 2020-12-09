@@ -18,14 +18,14 @@ public class Question {
     private String answerD;
     private String trueAnswer;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "idSubject")
     @JsonIgnoreProperties("questionCollection")
     private Subject subject;
 
     @ManyToMany(mappedBy = "questions", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("questions")
-    private List<Exam> exams;
+    private Set<Exam> exams;
 
 
     public Long getIdQuestion() {
@@ -92,11 +92,11 @@ public class Question {
         this.subject = subject;
     }
 
-    public List<Exam> getExams() {
+    public Set<Exam> getExams() {
         return exams;
     }
 
-    public void setExams(List<Exam> exams) {
+    public void setExams(Set<Exam> exams) {
         this.exams = exams;
     }
 }

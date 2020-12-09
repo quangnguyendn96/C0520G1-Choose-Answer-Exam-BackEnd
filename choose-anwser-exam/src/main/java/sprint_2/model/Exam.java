@@ -14,14 +14,14 @@ public class Exam {
     private Long idExam;
     private String examName;
     private String examDuration;
-    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exam")
     @JsonIgnoreProperties("exam")
     private Collection<ResultExam> resultExamCollection;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(name = "exam_question", joinColumns = @JoinColumn(name="idExam"), inverseJoinColumns = @JoinColumn(name="idQuestion"))
     @JsonIgnoreProperties("exams")
-    private List<Question> questions;
+    private Set<Question> questions;
 
     public Long getIdExam() {
         return idExam;
@@ -55,11 +55,11 @@ public class Exam {
         this.resultExamCollection = resultExamCollection;
     }
 
-    public List<Question> getQuestions() {
+    public Set<Question> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<Question> questions) {
+    public void setQuestions(Set<Question> questions) {
         this.questions = questions;
     }
 }
