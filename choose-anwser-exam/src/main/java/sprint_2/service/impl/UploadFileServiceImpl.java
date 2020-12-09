@@ -3,7 +3,7 @@ package sprint_2.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import sprint_2.model.ExcelHelper;
+import sprint_2.commonUtils.ExcelHelper;
 import sprint_2.model.Question;
 import sprint_2.repository.UploadFileRepository;
 import sprint_2.service.UploadFileService;
