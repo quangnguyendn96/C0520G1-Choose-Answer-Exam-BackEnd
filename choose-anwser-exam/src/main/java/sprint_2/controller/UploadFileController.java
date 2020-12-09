@@ -5,12 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sprint_2.model.ExcelHelper;
+import sprint_2.commonUtils.ExcelHelper;
 import sprint_2.model.Question;
-import sprint_2.model.ResponseMessage;
+import sprint_2.commonUtils.ResponseMessage;
 import sprint_2.service.UploadFileService;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -20,10 +19,22 @@ public class UploadFileController {
     UploadFileService uploadFileService;
 
     @PostMapping("/upload")
-    public ResponseEntity<List<Question>> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        List<Question> questions = uploadFileService.findAll(file);
-        return new ResponseEntity<>(questions, HttpStatus.OK);
+    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file) {
+        String message = "";
+        ExcelHelper excelHelper = new ExcelHelper();
+        if (excelHelper.hasExcelFormat(file)) {
+            try {
+                List<Question> questions = uploadFileService.findAll(file);
+                return new ResponseEntity<>(questions, HttpStatus.OK);
+            } catch (Exception e) {
+                message = "Không phân tích được tệp Excel: " + file.getOriginalFilename() + " Vui lòng kiểm tra lại !";
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+            }
+        }
+        message = "Vui lòng chọn định dạng file excel!";
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
+
 
     @PostMapping("/saveFile")
     public ResponseEntity<ResponseMessage> saveFile(@RequestParam("file") MultipartFile file) {
@@ -32,14 +43,14 @@ public class UploadFileController {
         if (excelHelper.hasExcelFormat(file)) {
             try {
                 uploadFileService.save(file);
-                message = "Uploaded the file successfully: " + file.getOriginalFilename();
+                message = "Lưu câu hỏi thành công từ file: " + file.getOriginalFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
             } catch (Exception e) {
-                message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+                message = "Không thể lưu câu hỏi vui long kiểm tra lại file: " + file.getOriginalFilename() + "!";
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
             }
         }
-        message = "Please upload an excel file!";
+        message = "Vui lòng chọn định dạng file excel!";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
 }
