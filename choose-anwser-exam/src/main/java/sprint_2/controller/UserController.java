@@ -192,12 +192,13 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             Set<Question> questionSet;
-            List<Question> questionList = new LinkedList<>();
+            List<Question> questionList;
             for (ResultExam resultExam : user.getResultExamCollection()) {
-                questionSet = (Set<Question>) resultExam.getExam().getQuestions();
+                questionList = new ArrayList<>();
+                questionSet = resultExam.getExam().getQuestions();
                 questionList.addAll(questionSet);
                 examHistoryDTOList.add(new ExamHistoryDTO(
-                        questionList.get(1).getSubject().getSubjectName(),
+                        questionList.get(0).getSubject().getSubjectName(),
                         resultExam.getExam().getExamName(),
                         resultExam.getMark(),
                         resultExam.getTakenDate()));
