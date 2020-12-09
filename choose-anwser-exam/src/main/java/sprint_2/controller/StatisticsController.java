@@ -17,7 +17,7 @@ public class StatisticsController {
     @Autowired
     private ResultExamService resultExamService;
 
-    @GetMapping("/point")
+    @GetMapping("/sum-point")
     public ResponseEntity<List<?>> getListDataExam() {
         List<?> dataList = resultExamService.statisticsData();
         if (dataList.isEmpty()) {
