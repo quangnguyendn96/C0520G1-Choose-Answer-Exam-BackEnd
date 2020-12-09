@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -191,9 +192,9 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             Set<Question> questionSet;
-            List<Question> questionList = new ArrayList<>();
+            List<Question> questionList = new LinkedList<>();
             for (ResultExam resultExam : user.getResultExamCollection()) {
-                questionSet = resultExam.getExam().getQuestions();
+                questionSet = (Set<Question>) resultExam.getExam().getQuestions();
                 questionList.addAll(questionSet);
                 examHistoryDTOList.add(new ExamHistoryDTO(
                         questionList.get(1).getSubject().getSubjectName(),
