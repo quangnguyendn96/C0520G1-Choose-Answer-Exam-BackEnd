@@ -19,7 +19,7 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public void creat(Exam exam) {
+    public void create(Exam exam) {
         examRepository.save(exam);
 
     }

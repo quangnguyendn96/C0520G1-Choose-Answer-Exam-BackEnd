@@ -7,7 +7,7 @@ import java.util.List;
 public interface ExamService {
     List<Exam> findAll();
 
-    void creat(Exam exam);
+    void create(Exam exam);
 
     void deleteById(Long id);
 
