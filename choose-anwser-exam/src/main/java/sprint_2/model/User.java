@@ -1,20 +1,33 @@
 package sprint_2.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import javax.validation.constraints.NotEmpty;
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 public class User {
+    public interface checkCreate {
+    }
+
+    public interface checkEdit {
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
-    private String userName;
+
+    @NotEmpty(message = "Vui lòng nhập tên đăng nhập", groups = checkCreate.class)
+    private String username;
+    @NotEmpty(message = "Vui lòng nhập mật khẩu", groups = checkCreate.class)
+
     private String password;
+    @NotEmpty(message = "Vui lòng nhập họ và tên", groups = checkEdit.class)
     private String fullName;
+    @NotEmpty(message = "Vui lòng nhập email", groups = checkEdit.class)
     private String email;
+    @NotEmpty(message = "Vui lòng nhập dịa chỉ", groups = checkEdit.class)
     private String address;
+    @NotEmpty(message = "Vui lòng nhập số điện thoại", groups = checkEdit.class)
     private String phoneNumber;
     private String image;
 
@@ -26,6 +39,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
+
+
     private Collection<ResultExam> resultExamCollection;
 
     public Role getRole() {
@@ -44,12 +59,12 @@ public class User {
         this.idUser = idUser;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -107,4 +122,5 @@ public class User {
     public void setResultExamCollection(Collection<ResultExam> resultExamCollection) {
         this.resultExamCollection = resultExamCollection;
     }
+
 }

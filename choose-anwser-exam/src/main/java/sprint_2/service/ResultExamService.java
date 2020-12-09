@@ -15,4 +15,8 @@ public interface ResultExamService {
     void deleteById(Long id);
 
     ResultExam findById(Long id);
+
+    List<?> statisticsCountExamSubject();
+    List<?> getStatisticsResultExamUserBySubject(String subject);
+
 }

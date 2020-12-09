@@ -19,6 +19,7 @@ public class ResultExamServiceImpl implements ResultExamService {
     }
 
     @Override
+
     public List<ResultExam> findAll() {
         return this.resultExamRepository.findAll();
     }
@@ -37,4 +38,15 @@ public class ResultExamServiceImpl implements ResultExamService {
     public ResultExam findById(Long id) {
         return this.resultExamRepository.findById(id).orElse(null);
     }
+
+    public List<?> statisticsCountExamSubject() {
+        return resultExamRepository.statisticsCountExamSubject();
+    }
+
+    @Override
+    public List<?> getStatisticsResultExamUserBySubject(String subject) {
+        return resultExamRepository.getStatisticsResultExamUserBySubject(subject);
+    }
+
+
 }

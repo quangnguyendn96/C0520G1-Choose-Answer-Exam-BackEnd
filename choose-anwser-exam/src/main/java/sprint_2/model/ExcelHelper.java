@@ -1,12 +1,9 @@
 package sprint_2.model;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import sprint_2.service.SubjectService;
 
@@ -16,14 +13,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-@Service
+@Component
 public class ExcelHelper {
     @Autowired
     private SubjectService subjectService;
 
     public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    static String SHEET = "Sheet1";
-
+//    static String SHEET = "Sheet1";
     public boolean hasExcelFormat(MultipartFile file) {
 
         return TYPE.equals(file.getContentType());
@@ -33,11 +29,10 @@ public class ExcelHelper {
         try {
             Workbook workbook = new XSSFWorkbook(is);
 
-            Sheet sheet = workbook.getSheet(SHEET);
+            Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rows = sheet.iterator();
 
             List<Question> questions = new ArrayList<>();
-
             int rowNumber = 0;
             while (rows.hasNext()) {
                 Row currentRow = rows.next();
@@ -56,14 +51,13 @@ public class ExcelHelper {
                 int cellIdx = 0;
                 while (cellsInRow.hasNext()) {
                     Cell currentCell = cellsInRow.next();
-
                     switch (cellIdx) {
 //                        case 0:
 //                            question.setId((long) currentCell.getNumericCellValue());
 //                            break;
 
                         case 0:
-                           question.setQuestionContent(currentCell.getStringCellValue());
+                            question.setQuestionContent(currentCell.getStringCellValue());
                             break;
 
                         case 1:
