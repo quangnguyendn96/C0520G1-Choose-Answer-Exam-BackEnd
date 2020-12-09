@@ -26,14 +26,14 @@ public interface ResultExamRepository extends JpaRepository<ResultExam, Long> {
             " GROUP BY Exam_quality_view.subject_name;";
 
     /* Câu truy vấn lấy tên , tổng số điểm và tổng số lần thi của người thi */
-    String SQL_QUERY_GET_SUM_POINT_USER = "SELECT `user`.user_name , SUM( result_exam.mark) AS sumPoint, COUNT(result_exam.user) AS countExam" +
+    String SQL_QUERY_GET_SUM_POINT_USER = "SELECT `user`.username , SUM( result_exam.mark) AS sumPoint, COUNT(result_exam.user) AS countExam" +
             " FROM result_exam" +
             " INNER JOIN `user` ON `user`.id_user = result_exam.user" +
-            " GROUP BY `user`.user_name" +
+            " GROUP BY `user`.username" +
             " ORDER BY sumPoint DESC,countExam ASC LIMIT 5";
 
     /* câu truy vấn lấy tên và điểm top 5 người thi theo môn học */
-    String SQL_QUERY_GET_TOP_BY_SUBJECT = " SELECT  `user`.user_name ,SUM( result_exam.mark) AS sumPointJava," +
+    String SQL_QUERY_GET_TOP_BY_SUBJECT = " SELECT  `user`.username ,SUM( result_exam.mark) AS sumPointJava," +
             " COUNT(result_exam.user) AS countExamJava" +
             " FROM result_exam" +
             " INNER JOIN `user` ON `user`.id_user = result_exam.user" +
