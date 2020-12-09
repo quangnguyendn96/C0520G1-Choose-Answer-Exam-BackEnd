@@ -84,7 +84,7 @@ public class ResultExamController {
             resultExam.setTakenDuration(result.getTakenDuration());
             resultExamService.save(resultExam);
             System.err.println("result-exam is not null and saved:");
-            return new ResponseEntity<>( HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
