@@ -77,7 +77,7 @@ public class UserController {
         if (user==null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            user.setRole(roleService.finById((long) 1));
+            user.setRole(roleService.findById((long) 1));
             user.setImage("");
             userService.save(user);
             System.err.println(user.toString());

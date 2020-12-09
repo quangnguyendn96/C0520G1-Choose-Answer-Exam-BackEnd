@@ -115,7 +115,7 @@ public class LoginController {
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(PASSWORD));
         user.setFullName("N/A");
-        Role rolUser = roleService.findById(2);
+        Role rolUser = roleService.findById(2L);
         user.setRole(rolUser);
         return userRepository.save(user);
     }

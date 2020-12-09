@@ -20,13 +20,13 @@ import java.io.IOException;
 /**
  * JwtAuthenticationFilter
  *
- * Version 1.0
+ * Version 2.0
  *
- * Date: 24/11/2020
+ * Date: 9/12/2020
  *
  * Copyright
  *
- * Author: Le Toan
+ * Author: Nguyen Huu Quang
  */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired

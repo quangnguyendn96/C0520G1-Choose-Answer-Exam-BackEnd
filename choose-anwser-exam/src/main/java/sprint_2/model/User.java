@@ -17,7 +17,7 @@ public class User {
     private Long idUser;
 
     @NotEmpty(message = "Vui lòng nhập tên đăng nhập", groups = checkCreate.class)
-    private String userName;
+    private String username;
     @NotEmpty(message = "Vui lòng nhập mật khẩu", groups = checkCreate.class)
 
     private String password;
@@ -43,8 +43,8 @@ public class User {
 
     private Collection<ResultExam> resultExamCollection;
 
-    public Role getRole(Role role) {
-        return this.role;
+    public Role getRole() {
+        return role;
     }
 
     public void setRole(Role role) {
