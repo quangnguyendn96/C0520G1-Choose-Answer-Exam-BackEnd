@@ -62,8 +62,10 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/login","/login-google","login-facebook").permitAll()
-                .anyRequest().authenticated();
+//                .authorizeRequests().antMatchers("/login","/login-google","login-facebook").permitAll()
+                .authorizeRequests()
+                .antMatchers("/").permitAll();
+//                .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
