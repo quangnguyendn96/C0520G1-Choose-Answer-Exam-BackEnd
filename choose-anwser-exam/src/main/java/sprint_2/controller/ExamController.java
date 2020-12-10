@@ -69,16 +69,16 @@ public class ExamController {
             for (int i = 0; i < idExamList.length; i++) {
                 exam = examService.findById(Long.parseLong(idExamList[i]));
                 if (exam == null) {
-                    return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+                    return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
                 }
                 if (examService.findById(Long.parseLong(idExamList[i])) == null) {
-                    return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+                    return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
                 }
                 examService.deleteById(Long.parseLong(idExamList[i]));
             }
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -93,12 +93,12 @@ public class ExamController {
             String[] idQuestionList = idQuestions.split("-#-");
             Exam exam = examService.findById(Long.parseLong(idQuestionList[0]));
             if (exam == null) {
-                return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
             }
             Set<Question> questions = exam.getQuestions();
             for (int i = 1; i < idQuestionList.length; i++) {
                 if (questionService.findById(Long.parseLong(idQuestionList[i])) == null) {
-                    return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+                    return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
                 }
                 questions.remove(questionService.findById(Long.parseLong(idQuestionList[i])));
             }
@@ -106,7 +106,7 @@ public class ExamController {
             examService.create(exam);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -121,12 +121,12 @@ public class ExamController {
             String[] idQuestionList = idQuestions.split("-#-");
             Exam exam = examService.findById(Long.parseLong(idQuestionList[0]));
             if (exam == null) {
-                return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
             }
             Set<Question> questions = exam.getQuestions();
             for (int i = 1; i < idQuestionList.length; i++) {
                 if (questionService.findById(Long.parseLong(idQuestionList[i])) == null) {
-                    return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+                    return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
                 }
                 questions.add(questionService.findById(Long.parseLong(idQuestionList[i])));
             }
@@ -134,7 +134,7 @@ public class ExamController {
             examService.create(exam);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -147,7 +147,7 @@ public class ExamController {
     public ResponseEntity<Void> addExam(@RequestParam("examName") String examName, @RequestParam("subject") String subject) {
         if (!examName.equals("")) {
            if(subjectService.findById(Long.parseLong(subject)) == null){
-               return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+               return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
            }
             Exam exam = new Exam();
             List<Question> questions = new ArrayList<>();
@@ -172,7 +172,7 @@ public class ExamController {
             examService.create(exam);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -185,7 +185,7 @@ public class ExamController {
     public ResponseEntity<Exam> findExamById(@PathVariable long id) {
         Exam exam = examService.findById(id);
         if (exam == null) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(exam, HttpStatus.OK);
     }
@@ -201,7 +201,7 @@ public class ExamController {
         List<Question> questions = questionService.findAll();
         Exam exam = examService.findById(Long.parseLong(idExam));
         if (exam == null) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         List<Question> questionList = new ArrayList<Question>(exam.getQuestions());
         int examQuestionLength = exam.getQuestions().size();

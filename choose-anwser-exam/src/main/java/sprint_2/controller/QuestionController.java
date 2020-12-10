@@ -60,7 +60,7 @@ public class QuestionController {
     public ResponseEntity deleteQuestion(@PathVariable long id) {
         Question meetingRoom = questionService.findById(id);
         if (meetingRoom == null) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         questionService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -75,7 +75,7 @@ public class QuestionController {
     @PostMapping("/create-question")
     public ResponseEntity<Void> addQuestion(@RequestBody Question question) {
         if(subjectService.findById(question.getSubject().getIdSubject()) == null){
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         question.setSubject(subjectService.findById(question.getSubject().getIdSubject()));
         questionService.create(question);
@@ -97,7 +97,7 @@ public class QuestionController {
         question1.setAnswerA(question.getAnswerA());
         question1.setQuestionContent(question.getQuestionContent());
         if(subjectService.findById(question.getSubject().getIdSubject()) == null){
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         question1.setSubject(subjectService.findById(question.getSubject().getIdSubject()));
         question1.setIdQuestion(question.getIdQuestion());
@@ -115,7 +115,7 @@ public class QuestionController {
     public ResponseEntity<Question> findQuestionById(@PathVariable long id) {
         Question question = questionService.findById(id);
         if (question == null) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(question, HttpStatus.OK);
     }
