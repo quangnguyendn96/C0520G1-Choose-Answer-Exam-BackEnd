@@ -7,6 +7,20 @@ import sprint_2.repository.QuestionRepository;
 import sprint_2.service.QuestionService;
 import java.util.List;
 
+/**
+ * service QuestionServiceImpl
+ * <p>
+ * Version 1.0
+ * <p>
+ * Date: 10/12/2020
+ * <p>
+ * Copyright
+ * <p>
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 10/12/2020        Nguyễn Tiến Hải            CRUD question
+ */
 @Service
 public class QuestionServiceImpl implements QuestionService {
     @Autowired

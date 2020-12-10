@@ -2,20 +2,39 @@ package sprint_2.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
-import java.util.List;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
-
+/**
+ * class question
+ * <p>
+ * Version 1.0
+ * <p>
+ * Date: 10/12/2020
+ * <p>
+ * Copyright
+ * <p>
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 10/12/2020        Nguyễn Tiến Hải            class question
+ */
 @Entity
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idQuestion;
+    @NotBlank
     private String questionContent;
+    @NotBlank
     private String answerA;
+    @NotBlank
     private String answerB;
+    @NotBlank
     private String answerC;
+    @NotBlank
     private String answerD;
+    @NotBlank
     private String trueAnswer;
 
     @ManyToOne()
