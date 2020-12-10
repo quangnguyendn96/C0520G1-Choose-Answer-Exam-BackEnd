@@ -9,8 +9,22 @@ import sprint_2.commonUtils.ExcelHelper;
 import sprint_2.model.Question;
 import sprint_2.commonUtils.ResponseMessage;
 import sprint_2.service.UploadFileService;
-
 import java.util.List;
+
+/**
+ * UploadFileController
+ * <p>
+ * Version 1.0
+ * <p>
+ * Date: 07-12-2020
+ * <p>
+ * Copyright
+ * <p>
+ * Modification Logs:
+ * DATE                 AUTHOR
+ * ----------------------------
+ * 07-12-2020         TungTS
+ */
 
 @RestController
 @CrossOrigin
@@ -18,8 +32,13 @@ public class UploadFileController {
     @Autowired
     UploadFileService uploadFileService;
 
+    /**
+     *get data for file excel
+     * @param file
+     * @return
+     */
     @PostMapping("/upload")
-    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";
         ExcelHelper excelHelper = new ExcelHelper();
         if (excelHelper.hasExcelFormat(file)) {
@@ -35,7 +54,11 @@ public class UploadFileController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
 
-
+    /**
+     * Save file
+     * @param file
+     * @return
+     */
     @PostMapping("/saveFile")
     public ResponseEntity<ResponseMessage> saveFile(@RequestParam("file") MultipartFile file) {
         String message = "";
