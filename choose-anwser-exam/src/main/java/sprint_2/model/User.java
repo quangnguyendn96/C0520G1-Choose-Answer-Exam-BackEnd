@@ -28,13 +28,13 @@ public class User {
     @Size(max = 30, message = "Họ tên không hợp lệ", groups = checkEdit.class)
     private String fullName;
     @NotEmpty(message = "Vui lòng nhập email", groups = checkEdit.class)
-    @Pattern(regexp = "^[a-z][a-z0-9_\\.]{5,32}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,2}$", message = "Địa chỉ không hợp lệ", groups = checkEdit.class)
+    @Pattern(regexp = "^[a-z][a-z0-9_\\.]{3,32}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,2}$", message = "Địa chỉ không hợp lệ", groups = checkEdit.class)
     private String email;
     @NotEmpty(message = "Vui lòng nhập địa chỉ", groups = checkEdit.class)
-    @Pattern(regexp = "^[a-z0-9]{3,60}$", message = "Địa chỉ không hợp lệ", groups = checkEdit.class)
+    @Pattern(regexp = "^[a-zA-Zà-ỹÀ-Ỹ_0-9-\\s]{1,30}$", message = "Địa chỉ không hợp lệ", groups = checkEdit.class)
     private String address;
     @NotEmpty(message = "Vui lòng nhập số điện thoại", groups = checkEdit.class)
-    @Pattern(regexp = "^[0-9\\-\\+]{10,15}$", message = "Địa chỉ không hợp lệ", groups = checkEdit.class)
+    @Pattern(regexp = "^[0-9\\-\\+]{10}$", message = "Địa chỉ không hợp lệ", groups = checkEdit.class)
     private String phoneNumber;
     private String image;
 
