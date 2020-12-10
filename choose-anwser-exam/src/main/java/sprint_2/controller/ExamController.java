@@ -20,7 +20,6 @@ import java.util.*;
 public class ExamController {
     @Autowired
     ExamService examService;
-
     @Autowired
     private QuestionService questionService;
 
@@ -30,7 +29,6 @@ public class ExamController {
     @GetMapping
     public ResponseEntity<List<Exam>> showAllExam() {
         List<Exam> list = examService.findAll();
-
         if (list.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -129,6 +127,7 @@ public class ExamController {
         }
         return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  
     @GetMapping("/findExam/{id}")
     public ResponseEntity<Exam> findExamById(@PathVariable long id) {
         Exam exam = examService.findById(id);
