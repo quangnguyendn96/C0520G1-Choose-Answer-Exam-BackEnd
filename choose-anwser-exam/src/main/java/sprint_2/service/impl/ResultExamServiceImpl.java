@@ -48,5 +48,10 @@ public class ResultExamServiceImpl implements ResultExamService {
         return resultExamRepository.getStatisticsResultExamUserBySubject(subject);
     }
 
+    @Override
+    public List<ResultExam> findUserByIdPointTime(Long idUser) {
+        return resultExamRepository.findResultExamByUser_IdUser(idUser);
+    }
+
 
 }

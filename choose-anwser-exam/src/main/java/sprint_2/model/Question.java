@@ -1,24 +1,31 @@
 package sprint_2.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Set;
+
 
 @Entity
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idQuestion;
+    @NotBlank
     private String questionContent;
+    @NotBlank
     private String answerA;
+    @NotBlank
     private String answerB;
+    @NotBlank
     private String answerC;
+    @NotBlank
     private String answerD;
+    @NotBlank
     private String trueAnswer;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "idSubject")
     @JsonIgnoreProperties("questionCollection")
     private Subject subject;

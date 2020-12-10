@@ -18,5 +18,6 @@ public interface ResultExamService {
 
     List<?> statisticsCountExamSubject();
     List<?> getStatisticsResultExamUserBySubject(String subject);
+    List<ResultExam> findUserByIdPointTime(Long idUser);
 
 }

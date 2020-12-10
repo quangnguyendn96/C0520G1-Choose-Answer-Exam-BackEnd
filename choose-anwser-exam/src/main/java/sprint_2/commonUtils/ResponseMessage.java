@@ -1,4 +1,4 @@
-package sprint_2.model;
+package sprint_2.commonUtils;
 
 public class ResponseMessage {
     private String message;

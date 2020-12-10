@@ -1,8 +1,8 @@
 package sprint_2.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -12,13 +12,15 @@ public class Exam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idExam;
+    @NotBlank
     private String examName;
+    @NotBlank
     private String examDuration;
-    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exam")
     @JsonIgnoreProperties("exam")
     private Collection<ResultExam> resultExamCollection;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(name = "exam_question", joinColumns = @JoinColumn(name="idExam"), inverseJoinColumns = @JoinColumn(name="idQuestion"))
     @JsonIgnoreProperties("exams")
     private Set<Question> questions;
