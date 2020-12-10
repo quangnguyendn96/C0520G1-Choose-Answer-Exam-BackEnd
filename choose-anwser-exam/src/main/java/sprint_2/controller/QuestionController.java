@@ -13,7 +13,7 @@ import sprint_2.service.SubjectService;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("question")
 public class QuestionController {
     @Autowired
@@ -32,7 +32,7 @@ public class QuestionController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable long id) {
+    public ResponseEntity deleteQuestion(@PathVariable long id) {
         Question meetingRoom = questionService.findById(id);
         if (meetingRoom == null) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -42,16 +42,24 @@ public class QuestionController {
     }
 
     @PostMapping("/create-question")
-    public ResponseEntity<Void> add(@RequestBody Question question) {
-        Question question1 = new Question();
-        question1.setTrueAnswer(question.getTrueAnswer());
-        question1.setQuestionContent(question.getQuestionContent());
-        question1.setAnswerA(question.getAnswerA());
-        question1.setAnswerB(question.getAnswerB());
-        question1.setAnswerC(question.getAnswerC());
+    public ResponseEntity<Void> addQuestion(@RequestBody Question question) {
+        question.setSubject(subjectService.findById(question.getSubject().getIdSubject()));
+        questionService.create(question);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/update-question")
+    public ResponseEntity<Void> editQuestion(@RequestBody Question question) {
+        Question question1  = new Question();
         question1.setAnswerD(question.getAnswerD());
+        question1.setAnswerC(question.getAnswerC());
+        question1.setAnswerB(question.getAnswerB());
+        question1.setAnswerA(question.getAnswerA());
+        question1.setQuestionContent(question.getQuestionContent());
         question1.setSubject(subjectService.findById(question.getSubject().getIdSubject()));
-        questionService.create(question1);
+        question1.setIdQuestion(question.getIdQuestion());
+        question.setSubject(subjectService.findById(question.getSubject().getIdSubject()));
+        questionService.create(question);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
