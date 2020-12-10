@@ -190,6 +190,21 @@ public class ExamController {
     }
 
     /**
+     * find exam by name
+     *
+     * @param valueName
+     * @return Exam
+     */
+    @GetMapping("/allExamByName")
+    public ResponseEntity<List<Exam>> allExamByName(@RequestParam("valueName") String valueName) {
+        List<Exam> exams = examService.findByExamNameContains(valueName);
+        if (exams.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(exams, HttpStatus.OK);
+    }
+
+    /**
      * find all subject
      *
      * @param idExam

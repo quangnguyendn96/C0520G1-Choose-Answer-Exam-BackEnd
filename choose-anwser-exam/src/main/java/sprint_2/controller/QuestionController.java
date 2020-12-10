@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sprint_2.model.Question;
 import sprint_2.model.Subject;
+import sprint_2.service.ExamService;
 import sprint_2.service.QuestionService;
 import sprint_2.service.SubjectService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +36,9 @@ public class QuestionController {
     private QuestionService questionService;
 
     @Autowired
+    private ExamService examService;
+
+    @Autowired
     private SubjectService subjectService;
 
     /**
@@ -51,19 +56,49 @@ public class QuestionController {
     }
 
     /**
+     * Show all question by name and subject
+     *
+     * @param valueName, subject
+     * @return list <Question>
+     */
+    @GetMapping("/allQuestionByNameAndSubject")
+    public ResponseEntity<List<Question>> getAllQuestionByNameAndSubject(@RequestParam("valueName") String valueName, @RequestParam("subject") String subject) {
+        List<Question> listQuestion = questionService.findBySubject_IdSubjectAndQuestionContentContains(Long.parseLong(subject), valueName);
+        if (listQuestion.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(listQuestion, HttpStatus.OK);
+    }
+
+    /**
      * delete question
      *
      * @param id
      * @return void
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity deleteQuestion(@PathVariable long id) {
-        Question meetingRoom = questionService.findById(id);
-        if (meetingRoom == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Boolean> deleteQuestion(@PathVariable long id) {
+        boolean check = false;
+        int length = examService.findAll().size();
+        List<Question> questionList;
+        for (int i = 0; i< length; i++){
+            questionList = new ArrayList<Question>(examService.findAll().get(i).getQuestions());
+            for (int k = 0; k < questionList.size(); k++) {
+                if (questionList.get(k).getIdQuestion().equals(id)){
+                    check= true;
+                    break;
+                }
+            }
         }
-        questionService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (!check) {
+            Question question = questionService.findById(id);
+            if (question == null) {
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+            questionService.deleteById(id);
+            return new ResponseEntity<>(true,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false,HttpStatus.OK);
     }
 
     /**
