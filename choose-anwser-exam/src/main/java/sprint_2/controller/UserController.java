@@ -14,13 +14,9 @@ import sprint_2.model.User;
 import sprint_2.service.ResultExamService;
 import sprint_2.service.RoleService;
 import sprint_2.service.UserService;
-
 import sprint_2.dto.ExamHistoryDTO;
-
 import java.util.ArrayList;
-
 //import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
