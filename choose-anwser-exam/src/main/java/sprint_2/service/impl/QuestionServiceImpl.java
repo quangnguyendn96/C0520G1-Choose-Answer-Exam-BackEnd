@@ -45,4 +45,9 @@ public class QuestionServiceImpl implements QuestionService {
     public void deleteById(Long id) {
         questionRepository.deleteById(id);
     }
+
+    @Override
+    public List<Question> findBySubject_IdSubjectAndQuestionContentContains(Long id, String name) {
+        return questionRepository.findBySubject_IdSubjectAndQuestionContentContains(id,name);
+    }
 }

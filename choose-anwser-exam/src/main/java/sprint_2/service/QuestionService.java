@@ -12,4 +12,7 @@ public interface QuestionService {
     Question findById(Long id);
 
     void deleteById(Long id);
+
+    List<Question> findBySubject_IdSubjectAndQuestionContentContains(Long id , String name);
+
 }
