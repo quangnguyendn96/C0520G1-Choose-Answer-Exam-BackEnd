@@ -3,6 +3,7 @@ package sprint_2.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +15,8 @@ import sprint_2.model.User;
 import sprint_2.service.ResultExamService;
 import sprint_2.service.RoleService;
 import sprint_2.service.UserService;
-
 import sprint_2.dto.ExamHistoryDTO;
-
 import java.util.ArrayList;
-
-//import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -51,8 +46,8 @@ public class UserController {
     RoleService roleService;
     @Autowired
     ResultExamService resultExamService;
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * get data for User list page
@@ -64,6 +59,7 @@ public class UserController {
     public ResponseEntity<List<UserManagerDTO>> getListUser() {
         List<User> userList = userService.findAll();
         List<UserManagerDTO> userListDTO = new ArrayList<>();
+        int point = 0;
         if (userList == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
@@ -72,7 +68,8 @@ public class UserController {
                     userListDTO.add(new UserManagerDTO(user.getIdUser(), user.getUsername(), user.getPassword(), user.getFullName(), user.getEmail(), user.getAddress(), user.getPhoneNumber(), user.getImage(), "0", "0"));
                 } else {
                     for (ResultExam resultExam : resultExamService.findUserByIdPointTime(user.getIdUser()))
-                        userListDTO.add(new UserManagerDTO(user.getIdUser(), user.getUsername(), user.getPassword(), user.getFullName(), user.getEmail(), user.getAddress(), user.getPhoneNumber(), user.getImage(), resultExam.getMark(), String.valueOf(resultExamService.findUserByIdPointTime(user.getIdUser()).size())));
+                        point += Integer.parseInt(resultExam.getMark());
+                    userListDTO.add(new UserManagerDTO(user.getIdUser(), user.getUsername(), user.getPassword(), user.getFullName(), user.getEmail(), user.getAddress(), user.getPhoneNumber(), user.getImage(), String.valueOf(point), String.valueOf(resultExamService.findUserByIdPointTime(user.getIdUser()).size())));
                 }
             }
             return new ResponseEntity<>(userListDTO, HttpStatus.OK);
@@ -103,15 +100,15 @@ public class UserController {
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createUser(@Validated({User.checkCreate.class, User.checkEdit.class})
                                            @RequestBody User user, BindingResult bindingResult) {
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             if (bindingResult.hasErrors()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
-                user.setRole(roleService.findById((long) 1));
+                user.setRole(roleService.findById((long) 2));
                 user.setImage("");
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
                 userService.save(user);
                 System.err.println(user.toString());
                 return new ResponseEntity<>(HttpStatus.OK);
@@ -127,7 +124,6 @@ public class UserController {
      */
     @PutMapping("/edit/{idUser}")
     public ResponseEntity<Void> editUser(@PathVariable Long idUser, @RequestBody User user) {
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User userNew = userService.findById(idUser);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

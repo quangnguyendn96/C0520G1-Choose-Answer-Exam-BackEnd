@@ -1,9 +1,5 @@
 package sprint_2.dto;
 
-import sprint_2.model.User;
-
-import javax.validation.constraints.NotEmpty;
-
 public class UserManagerDTO {
     private Long idUser;
     private String username;
