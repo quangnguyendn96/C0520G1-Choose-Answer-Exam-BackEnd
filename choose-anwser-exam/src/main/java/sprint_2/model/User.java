@@ -3,6 +3,8 @@ package sprint_2.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.validation.constraints.NotEmpty;
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
@@ -17,17 +19,22 @@ public class User {
     private Long idUser;
 
     @NotEmpty(message = "Vui lòng nhập tên đăng nhập", groups = checkCreate.class)
+    @Pattern(regexp = "^[a-z0-9]{3,30}$", message = "Tên đăng nhập không hợp lệ", groups = checkCreate.class)
     private String username;
     @NotEmpty(message = "Vui lòng nhập mật khẩu", groups = checkCreate.class)
-
+    @Pattern(regexp = "^[a-z0-9]{6,30}$", message = "Mật khẩu không hợp lệ", groups = checkEdit.class)
     private String password;
     @NotEmpty(message = "Vui lòng nhập họ và tên", groups = checkEdit.class)
+    @Size(max = 30, message = "Họ tên không hợp lệ", groups = checkEdit.class)
     private String fullName;
     @NotEmpty(message = "Vui lòng nhập email", groups = checkEdit.class)
+    @Pattern(regexp = "^[a-z][a-z0-9_\\.]{5,32}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,2}$", message = "Địa chỉ không hợp lệ", groups = checkEdit.class)
     private String email;
-    @NotEmpty(message = "Vui lòng nhập dịa chỉ", groups = checkEdit.class)
+    @NotEmpty(message = "Vui lòng nhập địa chỉ", groups = checkEdit.class)
+    @Pattern(regexp = "^[a-z0-9]{3,60}$", message = "Địa chỉ không hợp lệ", groups = checkEdit.class)
     private String address;
     @NotEmpty(message = "Vui lòng nhập số điện thoại", groups = checkEdit.class)
+    @Pattern(regexp = "^[0-9\\-\\+]{10,15}$", message = "Địa chỉ không hợp lệ", groups = checkEdit.class)
     private String phoneNumber;
     private String image;
 

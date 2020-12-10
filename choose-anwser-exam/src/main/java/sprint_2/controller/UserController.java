@@ -3,12 +3,15 @@ package sprint_2.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sprint_2.dto.ChangePasswordDTO;
+import sprint_2.dto.UserManagerDTO;
 import sprint_2.model.Question;
 import sprint_2.model.ResultExam;
 import sprint_2.model.User;
+import sprint_2.service.ResultExamService;
 import sprint_2.service.RoleService;
 import sprint_2.service.UserService;
 
@@ -46,6 +49,8 @@ public class UserController {
 
     @Autowired
     RoleService roleService;
+    @Autowired
+    ResultExamService resultExamService;
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
 
@@ -56,15 +61,24 @@ public class UserController {
      * @return
      */
     @GetMapping("list")
-    public ResponseEntity<List<User>> getListUser() {
+    public ResponseEntity<List<UserManagerDTO>> getListUser() {
         List<User> userList = userService.findAll();
-
-       if (userList==null){
+        List<UserManagerDTO> userListDTO = new ArrayList<>();
+        if (userList == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return new ResponseEntity<>(userList, HttpStatus.OK);
+            for (User user : userList) {
+                if (resultExamService.findUserByIdPointTime(user.getIdUser()).size() == 0) {
+                    userListDTO.add(new UserManagerDTO(user.getIdUser(), user.getUsername(), user.getPassword(), user.getFullName(), user.getEmail(), user.getAddress(), user.getPhoneNumber(), user.getImage(), "0", "0"));
+                } else {
+                    for (ResultExam resultExam : resultExamService.findUserByIdPointTime(user.getIdUser()))
+                        userListDTO.add(new UserManagerDTO(user.getIdUser(), user.getUsername(), user.getPassword(), user.getFullName(), user.getEmail(), user.getAddress(), user.getPhoneNumber(), user.getImage(), resultExam.getMark(), String.valueOf(resultExamService.findUserByIdPointTime(user.getIdUser()).size())));
+                }
+            }
+            return new ResponseEntity<>(userListDTO, HttpStatus.OK);
         }
     }
+
     /**
      * get data for User list page
      *
@@ -73,29 +87,35 @@ public class UserController {
      */
     @GetMapping("/{idUser}")
     public ResponseEntity<User> getUser(@PathVariable Long idUser) {
-       User user = userService.findById(idUser);
-       if (user==null){
-           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-       }
+        User user = userService.findById(idUser);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
     /**
      * create user
      *
-     * @param user
+     * @param
      * @return
      */
     @PostMapping(value = "/create")
-   public  ResponseEntity<Void> createUser(@RequestBody User user) {
+    public ResponseEntity<Void> createUser(@Validated({User.checkCreate.class, User.checkEdit.class})
+                                           @RequestBody User user, BindingResult bindingResult) {
 //        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (user==null){
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            user.setRole(roleService.findById((long) 1));
-            user.setImage("");
-            userService.save(user);
-            System.err.println(user.toString());
-            return new ResponseEntity<>(HttpStatus.OK);
+            if (bindingResult.hasErrors()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                user.setRole(roleService.findById((long) 1));
+                user.setImage("");
+                userService.save(user);
+                System.err.println(user.toString());
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
         }
     }
 
@@ -106,11 +126,11 @@ public class UserController {
      * @return
      */
     @PutMapping("/edit/{idUser}")
-    public  ResponseEntity<Void> editUser(@PathVariable Long idUser,@RequestBody User user) {
+    public ResponseEntity<Void> editUser(@PathVariable Long idUser, @RequestBody User user) {
 //        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User userNew= userService.findById(idUser);
-        if (user == null){
-            return new  ResponseEntity<>(HttpStatus.NOT_FOUND);
+        User userNew = userService.findById(idUser);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             userNew.setFullName(user.getFullName());
             userNew.setEmail(user.getEmail());
@@ -120,6 +140,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
+
     /**
      * delete asset by idUser
      *
@@ -127,7 +148,7 @@ public class UserController {
      * @return
      */
     @DeleteMapping("/delete/{idUser}")
-    public  ResponseEntity<Void> deleteUser(@PathVariable Long idUser) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long idUser) {
         User user = userService.findById(idUser);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
