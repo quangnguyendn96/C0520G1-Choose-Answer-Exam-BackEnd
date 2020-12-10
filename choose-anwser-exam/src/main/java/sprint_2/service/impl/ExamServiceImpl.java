@@ -8,6 +8,20 @@ import sprint_2.service.ExamService;
 
 import java.util.List;
 
+/**
+ * service ExamServiceImpl
+ * <p>
+ * Version 1.0
+ * <p>
+ * Date: 10/12/2020
+ * <p>
+ * Copyright
+ * <p>
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 10/12/2020        Nguyễn Tiến Hải            CRUD exam
+ */
 @Service
 public class ExamServiceImpl implements ExamService {
     @Autowired

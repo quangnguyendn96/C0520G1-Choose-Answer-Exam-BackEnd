@@ -9,8 +9,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findUserByUsername(String username);
 
     Boolean existsByUsername(String username);
-
-//    @Query(value = "select result_exam.user,sum(result_exam.mark) as `point`,count(result_exam.user) as `time` from result_exam\n" +
-//            "\tgroup by result_exam.user;,",nativeQuery = true)
-
 }

@@ -9,11 +9,25 @@ import sprint_2.model.Subject;
 import sprint_2.service.QuestionService;
 import sprint_2.service.SubjectService;
 
-
 import java.util.List;
 
+/**
+ * controller QuestionController
+ * <p>
+ * Version 1.0
+ * <p>
+ * Date: 10/12/2020
+ * <p>
+ * Copyright
+ * <p>
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 10/12/2020        Nguyễn Tiến Hải            CRUD question
+ */
+
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("question")
 public class QuestionController {
     @Autowired
@@ -22,6 +36,11 @@ public class QuestionController {
     @Autowired
     private SubjectService subjectService;
 
+    /**
+     * Show all question
+     *
+     * @return list <Question>
+     */
     @GetMapping
     public ResponseEntity<List<Question>> showAllQuestion() {
         List<Question> list = questionService.findAll();
@@ -31,8 +50,14 @@ public class QuestionController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    /**
+     * delete question
+     *
+     * @param id
+     * @return void
+     */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable long id) {
+    public ResponseEntity deleteQuestion(@PathVariable long id) {
         Question meetingRoom = questionService.findById(id);
         if (meetingRoom == null) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -41,29 +66,65 @@ public class QuestionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * Add new question
+     *
+     * @param question
+     * @return void
+     */
     @PostMapping("/create-question")
-    public ResponseEntity<Void> add(@RequestBody Question question) {
-        Question question1 = new Question();
-        question1.setTrueAnswer(question.getTrueAnswer());
-        question1.setQuestionContent(question.getQuestionContent());
-        question1.setAnswerA(question.getAnswerA());
-        question1.setAnswerB(question.getAnswerB());
-        question1.setAnswerC(question.getAnswerC());
-        question1.setAnswerD(question.getAnswerD());
-        question1.setSubject(subjectService.findById(question.getSubject().getIdSubject()));
-        questionService.create(question1);
+    public ResponseEntity<Void> addQuestion(@RequestBody Question question) {
+        if(subjectService.findById(question.getSubject().getIdSubject()) == null){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        question.setSubject(subjectService.findById(question.getSubject().getIdSubject()));
+        questionService.create(question);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * Add new question
+     *
+     * @param question
+     * @return void
+     */
+    @PutMapping("/update-question")
+    public ResponseEntity<Void> editQuestion(@RequestBody Question question) {
+        Question question1  = new Question();
+        question1.setAnswerD(question.getAnswerD());
+        question1.setAnswerC(question.getAnswerC());
+        question1.setAnswerB(question.getAnswerB());
+        question1.setAnswerA(question.getAnswerA());
+        question1.setQuestionContent(question.getQuestionContent());
+        if(subjectService.findById(question.getSubject().getIdSubject()) == null){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        question1.setSubject(subjectService.findById(question.getSubject().getIdSubject()));
+        question1.setIdQuestion(question.getIdQuestion());
+        questionService.create(question);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * find question by id
+     *
+     * @param id
+     * @return Question
+     */
     @GetMapping("/find/{id}")
     public ResponseEntity<Question> findQuestionById(@PathVariable long id) {
         Question question = questionService.findById(id);
         if (question == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(question, HttpStatus.OK);
     }
 
+    /**
+     * find all subject
+     *
+     * @return List <Subject>
+     */
     @GetMapping("/findAllSubject")
     public ResponseEntity<List<Subject>> findAllSubject() {
         List<Subject> subjects = subjectService.findAll();
