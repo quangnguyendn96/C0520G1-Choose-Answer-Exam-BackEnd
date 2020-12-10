@@ -1,12 +1,12 @@
 package sprint_2.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import sprint_2.model.ResultExam;
-import sprint_2.repository.ResultExamRepository;
-import sprint_2.service.ResultExamService;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Service;
+        import sprint_2.model.ResultExam;
+        import sprint_2.repository.ResultExamRepository;
+        import sprint_2.service.ResultExamService;
 
-import java.util.List;
+        import java.util.List;
 
 @Service
 public class ResultExamServiceImpl implements ResultExamService {
@@ -51,6 +51,11 @@ public class ResultExamServiceImpl implements ResultExamService {
     @Override
     public List<ResultExam> findUserByIdPointTime(Long idUser) {
         return resultExamRepository.findResultExamByUser_IdUser(idUser);
+    }
+
+    @Override
+    public List<?> getCountSubjectByMonth(String string1, String string2, String string3) {
+        return resultExamRepository.getCountSubjectByMonth(string1, string2, string3);
     }
 
 

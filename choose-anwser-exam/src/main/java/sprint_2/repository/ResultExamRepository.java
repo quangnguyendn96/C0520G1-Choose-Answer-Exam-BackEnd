@@ -2,7 +2,6 @@ package sprint_2.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import sprint_2.model.Exam;
 import sprint_2.model.ResultExam;
 
 import java.util.List;
@@ -42,6 +41,17 @@ public interface ResultExamRepository extends JpaRepository<ResultExam, Long> {
             " where Exam_quality_view.subject_name = ?1" +
             " GROUP BY `user`.username" +
             " ORDER BY sumPointJava desc,countExamJava ASC LIMIT 5;";
+
+    /* Câu lệnh lấy mộn thi theo quý của năm . vd: quý 1= tháng 1,2,3 */
+    String SQL_QUERY_GET_SUBJECT_BY_MONTH = "select Exam_quality_view.subject_name, count(Exam_quality_view.id_exam) as CountSubject" +
+            " from result_exam" +
+            " inner join Exam_quality_view on Exam_quality_view.id_exam = result_exam.exam" +
+            " where result_exam.taken_date like %?1 or result_exam.taken_date like %?2 or result_exam.taken_date like %?3 " +
+            " group by Exam_quality_view.subject_name;";
+
+    @Query(value = SQL_QUERY_GET_SUBJECT_BY_MONTH, nativeQuery = true)
+    List<?> getCountSubjectByMonth(String string1, String string2, String string3);
+
     /* câu truy vấn lấy và điểm và số lần thi của từng user */
     String SQL_QUERY_GET_POINT_TIMES_USER = " select result_exam.user,sum(result_exam.mark) as `point`,count(result_exam.user) as `times` from result_exam\n" +
             "where result_exam.user = ?1\n" +
@@ -59,5 +69,5 @@ public interface ResultExamRepository extends JpaRepository<ResultExam, Long> {
     @Query(value = SQL_QUERY_GET_POINT_TIMES_USER, nativeQuery = true)
     ResultExam findUserByIdPointTime(Long idUser);
 
-    List<ResultExam> findResultExamByUser_IdUser (Long idUser);
+    List<ResultExam> findResultExamByUser_IdUser(Long idUser);
 }

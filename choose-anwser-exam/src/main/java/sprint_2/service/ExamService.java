@@ -12,4 +12,6 @@ public interface ExamService {
     void deleteById(Long id);
 
     Exam findById(Long id);
+
+    List<Exam> findByExamNameContains(String name);
 }

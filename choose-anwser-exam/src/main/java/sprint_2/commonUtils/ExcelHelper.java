@@ -15,6 +15,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * ExcelHelper
+ *
+ * Version 1.0
+ *
+ * Date: 08-12-2020
+ *
+ * Copyright
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 08-12-2020         TungTS            Process excel file
+ */
+
 @Component
 public class ExcelHelper {
     @Autowired
@@ -22,7 +37,7 @@ public class ExcelHelper {
 
     public String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-    //    static String SHEET = "Sheet1";
+    //  check file format
     public boolean hasExcelFormat(MultipartFile file) {
         return TYPE.equals(file.getContentType());
     }
@@ -36,6 +51,7 @@ public class ExcelHelper {
             int rowNumber = 0;
             while (rows.hasNext()) {
                 Row currentRow = rows.next();
+
                 // skip header
                 if (rowNumber == 0) {
                     rowNumber++;
@@ -47,9 +63,6 @@ public class ExcelHelper {
                 while (cellsInRow.hasNext()) {
                     Cell currentCell = cellsInRow.next();
                     switch (cellIdx) {
-//                        case 0:
-//                            question.setId((long) currentCell.getNumericCellValue());
-//                            break;
 
                         case 0:
                             question.setQuestionContent(currentCell.getStringCellValue());

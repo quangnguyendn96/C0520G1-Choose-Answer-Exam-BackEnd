@@ -48,4 +48,9 @@ public class ExamServiceImpl implements ExamService {
     public Exam findById(Long id) {
         return examRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Exam> findByExamNameContains(String name) {
+        return examRepository.findByExamNameContains(name);
+    }
 }
