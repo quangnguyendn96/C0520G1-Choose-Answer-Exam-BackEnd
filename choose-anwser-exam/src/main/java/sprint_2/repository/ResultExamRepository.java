@@ -40,7 +40,7 @@ public interface ResultExamRepository extends JpaRepository<ResultExam, Long> {
             " INNER JOIN `user` ON `user`.id_user = result_exam.user" +
             " INNER JOIN Exam_quality_view ON Exam_quality_view.id_exam = result_exam.exam" +
             " where Exam_quality_view.subject_name = ?1" +
-            " GROUP BY `user`.user_name" +
+            " GROUP BY `user`.username" +
             " ORDER BY sumPointJava desc,countExamJava ASC LIMIT 5;";
     /* câu truy vấn lấy và điểm và số lần thi của từng user */
     String SQL_QUERY_GET_POINT_TIMES_USER = " select result_exam.user,sum(result_exam.mark) as `point`,count(result_exam.user) as `times` from result_exam\n" +
