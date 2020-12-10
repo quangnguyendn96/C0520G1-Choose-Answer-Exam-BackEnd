@@ -39,7 +39,7 @@ public class StatisticsController {
             String nameSubject = "JavaScript";
             topUserBySubjectList = resultExamService.getStatisticsResultExamUserBySubject(nameSubject);
         } else if ("2".equals(codeSubject)) {
-            String nameSubject = "HTML5";
+            String nameSubject = "HTML";
             topUserBySubjectList = resultExamService.getStatisticsResultExamUserBySubject(nameSubject);
         } else if ("3".equals(codeSubject)) {
             String nameSubject = "Angular";
