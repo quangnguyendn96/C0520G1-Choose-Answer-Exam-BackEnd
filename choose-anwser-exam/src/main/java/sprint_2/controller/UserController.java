@@ -59,7 +59,7 @@ public class UserController {
     public ResponseEntity<List<UserManagerDTO>> getListUser() {
         List<User> userList = userService.findAll();
         List<UserManagerDTO> userListDTO = new ArrayList<>();
-        int point = 0;
+        double point = 0;
         if (userList == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
@@ -68,7 +68,7 @@ public class UserController {
                     userListDTO.add(new UserManagerDTO(user.getIdUser(), user.getUsername(), user.getPassword(), user.getFullName(), user.getEmail(), user.getAddress(), user.getPhoneNumber(), user.getImage(), "0", "0"));
                 } else {
                     for (ResultExam resultExam : resultExamService.findUserByIdPointTime(user.getIdUser()))
-                        point += Integer.parseInt(resultExam.getMark());
+                        point += Double.parseDouble(resultExam.getMark());
                     userListDTO.add(new UserManagerDTO(user.getIdUser(), user.getUsername(), user.getPassword(), user.getFullName(), user.getEmail(), user.getAddress(), user.getPhoneNumber(), user.getImage(), String.valueOf(point), String.valueOf(resultExamService.findUserByIdPointTime(user.getIdUser()).size())));
                 }
             }

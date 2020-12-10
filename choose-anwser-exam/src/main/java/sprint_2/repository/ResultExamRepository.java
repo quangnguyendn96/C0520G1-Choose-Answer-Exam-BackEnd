@@ -56,8 +56,5 @@ public interface ResultExamRepository extends JpaRepository<ResultExam, Long> {
     @Query(value = SQL_QUERY_GET_TOP_BY_SUBJECT, nativeQuery = true)
     List<?> getStatisticsResultExamUserBySubject(String subject);
 
-    @Query(value = SQL_QUERY_GET_POINT_TIMES_USER, nativeQuery = true)
-    ResultExam findUserByIdPointTime(Long idUser);
-
     List<ResultExam> findResultExamByUser_IdUser (Long idUser);
 }
