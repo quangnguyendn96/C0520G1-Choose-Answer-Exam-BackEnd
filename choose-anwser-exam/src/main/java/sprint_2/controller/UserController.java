@@ -37,7 +37,7 @@ import java.util.Set;
  * Modification Logs:
  * DATE                 AUTHOR          DESCRIPTION
  * -----------------------------------------------------------------------
- * 08-12-2020         NhatL           CRUD
+ * 08-12-2020         NhatL/Tra           CRUD
  */
 
 @RestController
@@ -158,6 +158,12 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * get data for user variable
+     *
+     * @param id
+     * @return user
+     */
     @GetMapping("/findById/{id}")
     public ResponseEntity<User> findUserById(@PathVariable long id) {
         User user = userService.findById(id);
@@ -167,9 +173,18 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    /**
+     * get data for user1 variable, update information then save it
+     *
+     * @param user, id
+     * @return message
+     */
     @PutMapping("/update/{id}")
     public ResponseEntity<Void> updateAccount(@RequestBody User user, @PathVariable Long id) {
         User user1 = userService.findById(id);
+        if (user1 == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         user1.setFullName(user.getFullName());
         user1.setEmail(user.getEmail());
         user1.setAddress(user.getAddress());
@@ -181,8 +196,8 @@ public class UserController {
     /**
      * change password user
      *
-     * @param changePasswordDTO
-     * @return message
+     * @param changePasswordDTO, id
+     * @return errorsList
      */
     @PutMapping(value = "/{id}/change-password")
     public ResponseEntity<?> changePassWordUser(@Validated @RequestBody ChangePasswordDTO changePasswordDTO,
@@ -205,6 +220,12 @@ public class UserController {
         }
     }
 
+    /**
+     * find all history of exam
+     *
+     * @param id
+     * @return examHistoryDTOList, message
+     */
     @GetMapping("/findExamHistoryById/{id}")
     public ResponseEntity<List<ExamHistoryDTO>> getExamHistory(@PathVariable Long id) {
         List<ExamHistoryDTO> examHistoryDTOList = new ArrayList<>();
