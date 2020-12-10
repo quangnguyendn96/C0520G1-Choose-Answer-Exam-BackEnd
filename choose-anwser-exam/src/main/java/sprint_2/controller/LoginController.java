@@ -12,11 +12,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import sprint_2.config.JwtTokenProvider;
+import org.springframework.social.facebook.api.Facebook;
+//import org.springframework.social.facebook.api.User;
+import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import sprint_2.dto.LoginRequest;
 import sprint_2.dto.TokenDTO;
 import sprint_2.dto.UserDTO;
@@ -83,7 +88,7 @@ public class LoginController {
         final GoogleIdToken googleIdToken = GoogleIdToken.parse(verifier.getJsonFactory(), tokenDTO.getValue());
         final GoogleIdToken.Payload payload = googleIdToken.getPayload();
         User user;
-        if(userRepository.existsByUsername(payload.getEmail())) {
+        if (userRepository.existsByUsername(payload.getEmail())) {
             user = userRepository.findUserByUsername(payload.getEmail());
         } else {
             user = saveUser(payload.getEmail());
@@ -92,7 +97,7 @@ public class LoginController {
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
-    private UserDTO login(User user){
+    private UserDTO login(User user) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), PASSWORD)
         );
@@ -109,7 +114,7 @@ public class LoginController {
                 roles);
     }
 
-    private User saveUser(String email){
+    private User saveUser(String email) {
         User user = new User();
         user.setUsername(email);
         user.setEmail(email);
@@ -118,5 +123,25 @@ public class LoginController {
         Role rolUser = roleService.findById(2L);
         user.setRole(rolUser);
         return userRepository.save(user);
+    }
+
+    @PostMapping("login-facebook")
+    public ResponseEntity<?> authenticateByFacebookAccount(@RequestBody TokenDTO tokenDTO) throws IOException {
+        Facebook facebook = new FacebookTemplate(tokenDTO.getValue());
+        final String[] fields = {"email", "picture"};
+        org.springframework.social.facebook.api.User userFacebook = facebook.fetchObject("me", org.springframework.social.facebook.api.User.class, fields);
+        User user = new User();
+        if (userFacebook.getEmail() == null) {
+            user = saveUser(userFacebook.getName());
+        } else {
+            if (userRepository.existsByUsername(userFacebook.getEmail())) {
+                user = userRepository.findUserByUsername(userFacebook.getEmail());
+            } else {
+                user = saveUser(userFacebook.getEmail());
+            }
+        }
+
+        UserDTO userDTO = login(user);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 }
