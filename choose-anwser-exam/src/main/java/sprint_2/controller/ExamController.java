@@ -190,6 +190,21 @@ public class ExamController {
     }
 
     /**
+     * find exam by name
+     *
+     * @param valueName
+     * @return Exam
+     */
+    @GetMapping("/allExamByName")
+    public ResponseEntity<List<Exam>> allExamByName(@RequestParam("valueName") String valueName) {
+        List<Exam> exams = examService.findByExamNameContains(valueName);
+        if (exams.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(exams, HttpStatus.OK);
+    }
+
+    /**
      * find all subject
      *
      * @param idExam
@@ -197,12 +212,19 @@ public class ExamController {
      */
     @GetMapping("/allQuestion")
     public ResponseEntity<List<Question>> findAllSubject(@RequestParam("idExam") String idExam) {
-        List<Question> questions = questionService.findAll();
+        List<Question> questions = new ArrayList<>();
         Exam exam = examService.findById(Long.parseLong(idExam));
         if (exam == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         List<Question> questionList = new ArrayList<Question>(exam.getQuestions());
+        Long idSubject = questionList.get(0).getSubject().getIdSubject();
+        int lengthQuestion = questionService.findAll().size();
+        for (int i = 0; i < lengthQuestion; i++) {
+            if (questionService.findAll().get(i).getSubject().getIdSubject().equals(idSubject)) {
+                questions.add(questionService.findAll().get(i));
+            }
+        }
         int examQuestionLength = exam.getQuestions().size();
         for (int i = 0; i < examQuestionLength; i++) {
             questions.remove(questionList.get(i));
