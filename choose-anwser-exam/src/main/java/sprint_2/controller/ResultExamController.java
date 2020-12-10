@@ -10,7 +10,9 @@ import sprint_2.service.ResultExamService;
 import sprint_2.service.UserService;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/resultExam")
@@ -43,13 +45,16 @@ public class ResultExamController {
         }
 
         Question question = null;
-        List<Question> questions = null;
+        Set<Question> questions = null;
         for(Exam exam : examList){
             questions = exam.getQuestions();
             if(questions.isEmpty()){
                 continue;
             }
-            question = questions.get(0);
+            for(Iterator<Question> iterator = questions.iterator(); iterator.hasNext();){
+                question = iterator.next();
+                break;
+            }
             System.err.println(question.toString());
             if(question.getSubject().getSubjectName().toLowerCase().contains(subject.toLowerCase())){
                 examListBySubject.add(exam);

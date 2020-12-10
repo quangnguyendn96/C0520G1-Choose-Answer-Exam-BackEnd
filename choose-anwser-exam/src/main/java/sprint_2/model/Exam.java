@@ -21,7 +21,7 @@ public class Exam {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "exam_question", joinColumns = @JoinColumn(name="idExam"), inverseJoinColumns = @JoinColumn(name="idQuestion"))
     @JsonIgnoreProperties("exams")
-    private List<Question> questions;
+    private Set<Question> questions;
 
     public Long getIdExam() {
         return idExam;
@@ -55,11 +55,11 @@ public class Exam {
         this.resultExamCollection = resultExamCollection;
     }
 
-    public List<Question> getQuestions() {
+    public Set<Question> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<Question> questions) {
+    public void setQuestions(Set<Question> questions) {
         this.questions = questions;
     }
 }

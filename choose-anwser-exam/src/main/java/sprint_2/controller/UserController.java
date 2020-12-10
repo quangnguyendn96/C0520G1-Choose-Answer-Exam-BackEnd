@@ -193,7 +193,7 @@ public class UserController {
             Set<Question> questionSet;
             List<Question> questionList = new ArrayList<>();
             for (ResultExam resultExam : user.getResultExamCollection()) {
-                questionSet = resultExam.getExam().getQuestions();
+                questionSet = (Set<Question>) resultExam.getExam().getQuestions();
                 questionList.addAll(questionSet);
                 examHistoryDTOList.add(new ExamHistoryDTO(
                         questionList.get(1).getSubject().getSubjectName(),
