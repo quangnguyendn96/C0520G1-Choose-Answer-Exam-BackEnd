@@ -3,6 +3,7 @@ package sprint_2.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -47,9 +48,9 @@ public class UserController {
     @Autowired
     ResultExamService resultExamService;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
 
-    /**
+     /**
      * get data for User list page
      *
      * @param
@@ -161,7 +162,7 @@ public class UserController {
      * @return user
      */
     @GetMapping("/findById/{id}")
-    public ResponseEntity<User> findUserById(@PathVariable long id) {
+    public ResponseEntity<User> findUserById(@PathVariable("id") long id) {
         User user = userService.findById(id);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -203,12 +204,8 @@ public class UserController {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-//        if (BCrypt.checkpw(changePasswordDTO.getOldPassword(), user.getPassword())) {
-//            userService.changePassWord(id, passwordEncoder.encode(changePasswordDTO.getNewPassword()));
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        }
-        if (user.getPassword().equals(changePasswordDTO.getOldPassword())) {
-            userService.changePassWord(id, changePasswordDTO.getNewPassword());
+        if (BCrypt.checkpw(changePasswordDTO.getOldPassword(), user.getPassword())) {
+            userService.changePassWord(id, passwordEncoder.encode(changePasswordDTO.getNewPassword()));
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             errorsList.add(new ChangePasswordDTO("Mật khẩu không chính xác"));
