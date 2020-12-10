@@ -7,6 +7,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * class Exam
+ * <p>
+ * Version 1.0
+ * <p>
+ * Date: 10/12/2020
+ * <p>
+ * Copyright
+ * <p>
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 10/12/2020        Nguyễn Tiến Hải            class exam
+ */
 @Entity
 public class Exam {
     @Id
