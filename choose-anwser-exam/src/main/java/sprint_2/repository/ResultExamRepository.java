@@ -49,13 +49,17 @@ public interface ResultExamRepository extends JpaRepository<ResultExam, Long> {
             " where result_exam.taken_date like %?1 or result_exam.taken_date like %?2 or result_exam.taken_date like %?3 " +
             " group by Exam_quality_view.subject_name;";
 
+    /* Câu lệnh lấy top 10 người thi có điểm cao nhất theo môn thi */
+    String SQL_QUERY_GET_RESULT_EXAM_TOP10_USER_BY_SUBJECT = "select `user`.username,sum(result_exam.mark) as Sum_Point , count(`user`.username) as count_Exam" +
+            " from result_exam" +
+            " inner join Exam_quality_view on Exam_quality_view.id_exam = result_exam.exam" +
+            " inner join `user` on `user`.id_user = result_exam.`user`" +
+            " where Exam_quality_view.subject_name =?1" +
+            " group by `user`.username" +
+            " order by Sum_Point desc limit 10;";
+
     @Query(value = SQL_QUERY_GET_SUBJECT_BY_MONTH, nativeQuery = true)
     List<?> getCountSubjectByMonth(String string1, String string2, String string3);
-
-    /* câu truy vấn lấy và điểm và số lần thi của từng user */
-    String SQL_QUERY_GET_POINT_TIMES_USER = " select result_exam.user,sum(result_exam.mark) as `point`,count(result_exam.user) as `times` from result_exam\n" +
-            "where result_exam.user = ?1\n" +
-            "group by result_exam.user;";
 
     @Query(value = SQL_QUERY_GET_SUM_POINT_USER, nativeQuery = true)
     List<?> statisticsData();
@@ -65,7 +69,10 @@ public interface ResultExamRepository extends JpaRepository<ResultExam, Long> {
 
     @Query(value = SQL_QUERY_GET_TOP_BY_SUBJECT, nativeQuery = true)
     List<?> getStatisticsResultExamUserBySubject(String subject);
-  
-    List<ResultExam> findResultExamByUser_IdUser (Long idUser);
+
+    @Query(value = SQL_QUERY_GET_RESULT_EXAM_TOP10_USER_BY_SUBJECT, nativeQuery = true)
+    List<?> getStatisticResultExamTop10User(String subject);
+
+    List<ResultExam> findResultExamByUser_IdUser(Long idUser);
 
 }

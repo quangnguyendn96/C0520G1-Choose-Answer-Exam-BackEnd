@@ -9,6 +9,21 @@ import sprint_2.service.ResultExamService;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * StatisticsController
+ * <p>
+ * Version 1.0
+ * <p>
+ * Date: 10-12-2020
+ * <p>
+ * Copyright
+ * <p>
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 08-12-2020         HienTH          R
+ */
+
 @CrossOrigin
 @RestController
 @RequestMapping("/statistics")
@@ -16,8 +31,13 @@ public class StatisticsController {
     @Autowired
     private ResultExamService resultExamService;
 
+    /**
+     * get data for ResultExam,Exam,Subject,User
+     *
+     * @return
+     */
     @GetMapping("/sum-point")
-    public ResponseEntity<List<?>> getListDataExam() {
+    public ResponseEntity<List<?>> getListDataResultExam() {
         List<?> dataList = resultExamService.statisticsData();
         if (dataList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -25,6 +45,11 @@ public class StatisticsController {
         return new ResponseEntity<>(dataList, HttpStatus.OK);
     }
 
+    /**
+     * get data for ResultExam,Exam,Subject,User
+     *
+     * @return
+     */
     @GetMapping("/count-subject")
     public ResponseEntity<List<?>> getListCountExamSubject() {
         List<?> countSubjectList = resultExamService.statisticsCountExamSubject();
@@ -34,6 +59,12 @@ public class StatisticsController {
         return new ResponseEntity<>(countSubjectList, HttpStatus.OK);
     }
 
+    /**
+     * get data Top point User By Subject
+     *
+     * @param codeSubject
+     * @return
+     */
     @GetMapping(value = "/search-by-subject")
     public ResponseEntity<List<?>> getUserResultExamBySubject(@RequestParam("codeSubject") String codeSubject) {
         List<?> topUserBySubjectList = null;
@@ -53,6 +84,11 @@ public class StatisticsController {
         return new ResponseEntity<>(topUserBySubjectList, HttpStatus.OK);
     }
 
+    /**
+     * get data Subject By Month In Year
+     *
+     * @return
+     */
     @GetMapping(value = "/search-container-subject")
     public ResponseEntity<List<?>> getResultExamSubjectBy() {
         List<?> subjectByQuarter1;
@@ -89,5 +125,20 @@ public class StatisticsController {
         quarterList.add(quarter3);
         quarterList.add(quarter4);
         return new ResponseEntity<>(quarterList, HttpStatus.OK);
+    }
+
+    /**
+     * get data Top 10 point User By Subject
+     *
+     * @param subject
+     * @return
+     */
+    @GetMapping(value = "/search-result-top10")
+    public ResponseEntity<List<?>> getStatisticResultExamTop10User(@RequestParam("subject") String subject) {
+        List<?> top10UserList = resultExamService.getStatisticResultExamTop10User(subject);
+        if (top10UserList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(top10UserList, HttpStatus.OK);
     }
 }
