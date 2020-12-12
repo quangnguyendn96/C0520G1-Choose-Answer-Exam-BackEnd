@@ -28,7 +28,7 @@ public class UserDetailsImpl implements UserDetails {
     public static sprint_2.model.UserDetailsImpl build(User user) {
         List<GrantedAuthority> grantList = new ArrayList<>();
         ;
-        grantList.add(new SimpleGrantedAuthority(user.getRole().getRoleName()));
+        grantList.add(new SimpleGrantedAuthority( user.getRole().getRoleName()));
         return new sprint_2.model.UserDetailsImpl(user.getIdUser(),
                 user.getUsername(),
                 user.getPassword(),
@@ -98,4 +98,5 @@ public class UserDetailsImpl implements UserDetails {
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
     }
+
 }

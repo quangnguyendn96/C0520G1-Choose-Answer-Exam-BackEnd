@@ -14,16 +14,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 /**
  * WebConfigSecurity
- *
- * Version 2.0
- *
+ * <p>
+ * Version 1.0
+ * <p>
  * Date: 07/12/2020
- *
+ * <p>
  * Copyright
- *
+ * <p>
  * Author: Nguyen Huu Quang
  */
 @Configuration
@@ -55,6 +54,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
 
     /**
      * check authentication and authorization of user
+     *
      * @param http
      * @throws Exception
      */
@@ -62,11 +62,12 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//                .authorizeRequests().antMatchers("/login","/login-google","login-facebook").permitAll()
-                .authorizeRequests()
-                .antMatchers("/").permitAll();
+                .authorizeRequests().antMatchers("/login", "/login-google", "/login-facebook").permitAll();
+//                .antMatchers("/", "/user/list").permitAll();
+//                .antMatchers("/question/**","/exam").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 //                .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
 }

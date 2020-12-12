@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * JwtTokenProvider
  *
- * Version 2.0
+ * Version 1.0
  *
  * Date: 08/12/2020
  *
