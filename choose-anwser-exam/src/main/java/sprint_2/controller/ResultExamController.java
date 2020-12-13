@@ -9,11 +9,21 @@ import sprint_2.service.ExamService;
 import sprint_2.service.ResultExamService;
 import sprint_2.service.UserService;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
+import java.util.*;
+/**
+ * controller QuestionController
+ *
+ * Version 1.0
+ *
+ * Date: 10/12/2020
+ *
+ * Copyright
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * ------------------------------------------------------------------------
+ * 13/12/2020        Chuong HKV          Taking exams and result of the exam
+ */
 @RestController
 @RequestMapping("/resultExam")
 @CrossOrigin
@@ -27,6 +37,11 @@ public class ResultExamController {
     @Autowired
     private ResultExamService resultExamService;
 
+    /**
+     * show exam-result list
+     *
+     * @return list
+     */
     @GetMapping("/list")
     public ResponseEntity<List<ResultExam>> getListResultExam() {
         List<ResultExam> list = resultExamService.findAll();
@@ -36,6 +51,12 @@ public class ResultExamController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    /**
+     * show exam list by subject
+     *
+     * @param @subject
+     * @return list
+     */
     @GetMapping("/list-exam-by-subject/{subject}")
     public ResponseEntity<List<Exam>> getListExamBySubject(@PathVariable String subject) {
         List<Exam> examList = examService.findAll();
@@ -51,7 +72,7 @@ public class ResultExamController {
             if(questions.isEmpty()){
                 continue;
             }
-            for(Iterator<Question> iterator = questions.iterator(); iterator.hasNext();){
+            for (Iterator<Question> iterator = questions.iterator(); iterator.hasNext();){
                 question = iterator.next();
                 break;
             }
@@ -68,6 +89,12 @@ public class ResultExamController {
         return new ResponseEntity<>(examListBySubject, HttpStatus.OK);
     }
 
+    /**
+     * get exam by Id
+     *
+     * @param @id
+     * @return exam
+     */
     @GetMapping("/exam-by-id/{id}")
     public ResponseEntity<Exam> findExamById(@PathVariable long id) {
         Exam exam = examService.findById(id);
@@ -77,6 +104,12 @@ public class ResultExamController {
         return new ResponseEntity<>(exam, HttpStatus.OK);
     }
 
+    /**
+     * save result of exam
+     *
+     * @param
+     * @return void
+     */
     @PostMapping(value = "/create")
     public  ResponseEntity<Void> createResultExam(@RequestBody ResultExamDTO result) {
         if(result != null) {
@@ -94,6 +127,12 @@ public class ResultExamController {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    /**
+     * get result-exam by Id
+     *
+     * @param id
+     * @return result-exam
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ResultExam> findResultExamById(@PathVariable long id) {
         ResultExam resultExam = resultExamService.findById(id);
