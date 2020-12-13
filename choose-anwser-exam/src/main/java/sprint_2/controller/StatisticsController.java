@@ -62,24 +62,14 @@ public class StatisticsController {
     /**
      * get data Top point User By Subject
      *
-     * @param codeSubject
+     * @param subject
      * @return
      */
     @GetMapping(value = "/search-by-subject")
-    public ResponseEntity<List<?>> getUserResultExamBySubject(@RequestParam("codeSubject") String codeSubject) {
-        List<?> topUserBySubjectList = null;
-        if ("1".equals(codeSubject)) {
-            String nameSubject = "JavaScript";
-            topUserBySubjectList = resultExamService.getStatisticsResultExamUserBySubject(nameSubject);
-        } else if ("2".equals(codeSubject)) {
-            String nameSubject = "HTML";
-            topUserBySubjectList = resultExamService.getStatisticsResultExamUserBySubject(nameSubject);
-        } else if ("3".equals(codeSubject)) {
-            String nameSubject = "Angular";
-            topUserBySubjectList = resultExamService.getStatisticsResultExamUserBySubject(nameSubject);
-        } else if ("4".equals(codeSubject)) {
-            String nameSubject = "Java";
-            topUserBySubjectList = resultExamService.getStatisticsResultExamUserBySubject(nameSubject);
+    public ResponseEntity<List<?>> getUserResultExamBySubject(@RequestParam("subject") String subject) {
+        List<?> topUserBySubjectList = resultExamService.getStatisticsResultExamUserBySubject(subject);
+        if (topUserBySubjectList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(topUserBySubjectList, HttpStatus.OK);
     }
