@@ -38,25 +38,25 @@ public interface ResultExamRepository extends JpaRepository<ResultExam, Long> {
             " FROM result_exam" +
             " INNER JOIN `user` ON `user`.id_user = result_exam.user" +
             " INNER JOIN Exam_quality_view ON Exam_quality_view.id_exam = result_exam.exam" +
-            " where Exam_quality_view.subject_name = ?1" +
+            " WHERE Exam_quality_view.subject_name = ?1" +
             " GROUP BY `user`.username" +
             " ORDER BY sumPointJava desc,countExamJava ASC LIMIT 5;";
 
     /* Câu lệnh lấy mộn thi theo quý của năm . vd: quý 1= tháng 1,2,3 */
-    String SQL_QUERY_GET_SUBJECT_BY_MONTH = "select Exam_quality_view.subject_name, count(Exam_quality_view.id_exam) as CountSubject" +
-            " from result_exam" +
-            " inner join Exam_quality_view on Exam_quality_view.id_exam = result_exam.exam" +
-            " where result_exam.taken_date like %?1 or result_exam.taken_date like %?2 or result_exam.taken_date like %?3 " +
-            " group by Exam_quality_view.subject_name;";
+    String SQL_QUERY_GET_SUBJECT_BY_MONTH = "SELECT Exam_quality_view.subject_name, COUNT(Exam_quality_view.id_exam) AS CountSubject" +
+            " FROM result_exam" +
+            " INNER JOIN Exam_quality_view ON Exam_quality_view.id_exam = result_exam.exam" +
+            " WHERE result_exam.taken_date LIKE %?1 OR result_exam.taken_date LIKE %?2 OR result_exam.taken_date LIKE %?3 " +
+            " GROUP BY Exam_quality_view.subject_name;";
 
     /* Câu lệnh lấy top 10 người thi có điểm cao nhất theo môn thi */
-    String SQL_QUERY_GET_RESULT_EXAM_TOP10_USER_BY_SUBJECT = "select `user`.username,sum(result_exam.mark) as Sum_Point , count(`user`.username) as count_Exam" +
-            " from result_exam" +
-            " inner join Exam_quality_view on Exam_quality_view.id_exam = result_exam.exam" +
-            " inner join `user` on `user`.id_user = result_exam.`user`" +
-            " where Exam_quality_view.subject_name =?1" +
-            " group by `user`.username" +
-            " order by Sum_Point desc limit 10;";
+    String SQL_QUERY_GET_RESULT_EXAM_TOP10_USER_BY_SUBJECT = "SELECT `user`.username, SUM(result_exam.mark) AS Sum_Point , COUNT(`user`.username) AS count_Exam" +
+            " FROM result_exam" +
+            " INNER JOIN Exam_quality_view ON Exam_quality_view.id_exam = result_exam.exam" +
+            " INNER JOIN `user` ON `user`.id_user = result_exam.`user`" +
+            " WHERE Exam_quality_view.subject_name =?1" +
+            " GROUP BY `user`.username" +
+            " ORDER BY Sum_Point DESC;";
 
     @Query(value = SQL_QUERY_GET_SUBJECT_BY_MONTH, nativeQuery = true)
     List<?> getCountSubjectByMonth(String string1, String string2, String string3);
