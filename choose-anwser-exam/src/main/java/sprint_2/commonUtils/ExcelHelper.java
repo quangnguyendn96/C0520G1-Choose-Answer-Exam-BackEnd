@@ -1,10 +1,12 @@
-package sprint_2.model;
+package sprint_2.commonUtils;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import sprint_2.model.Question;
+import sprint_2.model.Subject;
 import sprint_2.service.SubjectService;
 
 import java.io.IOException;
@@ -18,36 +20,29 @@ public class ExcelHelper {
     @Autowired
     private SubjectService subjectService;
 
-    public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-//    static String SHEET = "Sheet1";
-    public boolean hasExcelFormat(MultipartFile file) {
+    public String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
+    //    static String SHEET = "Sheet1";
+    public boolean hasExcelFormat(MultipartFile file) {
         return TYPE.equals(file.getContentType());
     }
 
     public List<Question> excelQuestion(InputStream is) {
         try {
             Workbook workbook = new XSSFWorkbook(is);
-
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rows = sheet.iterator();
-
             List<Question> questions = new ArrayList<>();
             int rowNumber = 0;
             while (rows.hasNext()) {
                 Row currentRow = rows.next();
-
                 // skip header
                 if (rowNumber == 0) {
                     rowNumber++;
                     continue;
                 }
-
                 Iterator<Cell> cellsInRow = currentRow.iterator();
-
                 Question question = new Question();
-
-
                 int cellIdx = 0;
                 while (cellsInRow.hasNext()) {
                     Cell currentCell = cellsInRow.next();
