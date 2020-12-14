@@ -71,8 +71,10 @@ public class UserController {
                 } else {
                     for (ResultExam resultExam : resultExamService.findUserByIdPointTime(user.getIdUser()))
                         point += Double.parseDouble(resultExam.getMark());
+                    //phuong thuc size dung de lay times khong the sua
                     userListDTO.add(new UserManagerDTO(user.getIdUser(), user.getUsername(), user.getPassword(), user.getFullName(), user.getEmail(), user.getAddress(), user.getPhoneNumber(), user.getImage(), String.valueOf(point), String.valueOf(resultExamService.findUserByIdPointTime(user.getIdUser()).size())));
                 }
+                point = 0;
             }
             return new ResponseEntity<>(userListDTO, HttpStatus.OK);
         }
@@ -112,7 +114,6 @@ public class UserController {
                 user.setImage("");
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 userService.save(user);
-                System.err.println(user.toString());
                 return new ResponseEntity<>(HttpStatus.OK);
             }
         }
