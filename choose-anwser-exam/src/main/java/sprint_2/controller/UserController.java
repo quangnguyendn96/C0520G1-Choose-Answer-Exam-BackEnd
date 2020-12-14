@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sprint_2.dto.ChangePasswordDTO;
+import sprint_2.dto.ImageDTO;
 import sprint_2.dto.UserManagerDTO;
 import sprint_2.model.Question;
 import sprint_2.model.ResultExam;
@@ -240,5 +241,18 @@ public class UserController {
             }
         }
         return new ResponseEntity<>(examHistoryDTOList, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/change-image")
+    public ResponseEntity<Void> updateImage(@PathVariable long id, @RequestBody ImageDTO imageDTO){
+        User user = userService.findById(id);
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            user.setImage(imageDTO.getImage());
+            userService.save(user);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
     }
 }
