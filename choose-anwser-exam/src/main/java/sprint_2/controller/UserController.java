@@ -43,7 +43,6 @@ import java.util.Set;
 public class UserController {
     @Autowired
     UserService userService;
-
     @Autowired
     RoleService roleService;
     @Autowired
